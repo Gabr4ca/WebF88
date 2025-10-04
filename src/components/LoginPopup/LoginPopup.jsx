@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets'
 
 const LoginPopup = ({setShowLogin}) => {
 
-  const [currState,setCurrState] = useState("Sign Up")
+  const [currState,setCurrState] = useState("Đăng ký")
 
   return (
     <div className='login-popup'>
@@ -14,18 +14,18 @@ const LoginPopup = ({setShowLogin}) => {
           <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt="" />
         </div>
         <div className="login-popup-inputs">
-          {currState==="Login"?<></>:<input type="text" placeholder='Enter Name' required />}
-          <input type="text" placeholder='Enter Email' required />
-          <input type="password" placeholder='Enter Password' required />
+          {currState==="Login"?<></>:<input type="text" placeholder='Tên' required />}
+          <input type="text" placeholder='Email' required />
+          <input type="password" placeholder='Mật khẩu' required />
         </div>
-        <button>{currState==="Sign Up"?"Create Account":"Login"}</button>
+        <button>{currState==="Sign Up"?"Tạo tài khoản":"Đăng nhập"}</button>
         <div className="login-popup-condition">
           <input type="checkbox" required/>
-          <p>By continuing, I agree to the terms of use & privacy policy.</p>
+          <p style={{marginTop: "4px"}}>Tôi đồng ý với mọi điều khoản.</p>
         </div>
         {currState==="Login"
-          ?<p>Create a new account? <span onClick={()=> setCurrState("Sign Up")}>Click here</span></p>
-          :<p>Already have an account? <span onClick={()=> setCurrState("Login")}>Login here</span></p>
+          ?<p>Tạo tài khoản mới? <span onClick={()=> setCurrState("Sign Up")}>Nhấn vào đây</span></p>
+          :<p>Đã có tài khoản? <span onClick={()=> setCurrState("Login")}>Đăng nhập tại đây</span></p>
         }
         
         
