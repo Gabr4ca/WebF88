@@ -1,10 +1,11 @@
 .food-item{
-    width: 100%;
+    width: 90%;
     margin: auto;
     border-radius: 15px;
     box-shadow: 0px 0px 10px #00000015;
     transition: 0.3s;
     animation: fadeIn 1s;
+    overflow: hidden;
 }
 
 .food-item:hover{
@@ -12,9 +13,15 @@
 }
 
 .food-item-image{
+    /* transition: 0.3s;
+    animation: fadeIn 1s; */
     width: 100%;
     border-radius: 15px 15px 0px 0px;
 }
+
+/* .food-item-image:hover{
+    transform: scale(1.05);
+} */
 
 .food-item-info{
     padding: 20px;

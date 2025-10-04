@@ -3,6 +3,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0; 
+    z-index: 1000;
+    background-color: white; 
+    width: 100%;
 }
 
 .navbar .logo{
@@ -14,7 +19,7 @@
     list-style: none;
     gap: 20px;
     color: #49557e;
-    font-size: 18px;
+    font-size: 25px;
 }
 
 .navbar-right{
