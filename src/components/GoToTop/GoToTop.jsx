@@ -1,9 +1,11 @@
 // src/components/GoToTopButton/GoToTopButton.jsx
 import React, {useState, useEffect} from "react";
 import "./GoToTop.css"; // We will create this CSS file next
+import {useNavigate} from "react-router-dom";
 
 const GoToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   // Show button when page is scrolled down
   const toggleVisibility = () => {
@@ -26,6 +28,7 @@ const GoToTop = () => {
 
   // Scroll to top smoothly
   const scrollToTop = () => {
+    navigate("/");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
