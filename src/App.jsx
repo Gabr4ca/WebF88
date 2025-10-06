@@ -7,6 +7,9 @@ import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
 import GoToTopButton from "./components/GoToTop/GoToTop";
+import UserProfile from "./components/UserProfile/UserProfile";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 
 const App = () => {
   // const [data, setData] = useState([]);
@@ -48,12 +51,17 @@ const App = () => {
       </div> */}
       {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
       <div className="app">
-        <Navbar setShowLogin={setShowLogin} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<PlaceOrder />} />
-        </Routes>
+        <ErrorBoundary>
+          <Navbar setShowLogin={setShowLogin} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/order" element={<PlaceOrder />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/myorders" element={<UserProfile />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        </ErrorBoundary>
       </div>
       <Footer />
       <GoToTopButton />

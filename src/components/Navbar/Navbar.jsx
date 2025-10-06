@@ -8,12 +8,12 @@ const Navbar = ({setShowLogin}) => {
   const [menu, setMenu] = useState("home");
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
-  const {getTotalCartAmount, token, setToken} = useContext(StoreContext);
+  const {getTotalCartAmount, token, user, logout} = useContext(StoreContext);
 
   const navigate = useNavigate();
 
-  const logout = () => {
-    setToken("");
+  const handleLogout = () => {
+    logout();
     navigate("/");
   };
 
@@ -91,18 +91,36 @@ const Navbar = ({setShowLogin}) => {
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
         {!token ? (
-          <button onClick={() => setShowLogin(true)}>Đăng Nhập</button>
+          <button onClick={() => setShowLogin(true)}>Sign In</button>
         ) : (
           <div className="navbar-profile">
-            <img src={assets.user_icon} alt="" />
-            <div className="navbar-profile-name">Hi, User</div>
+            {user?.avatar ? (
+              <img src={user.avatar} alt="Profile" className="profile-avatar" />
+            ) : (
+              <img src={assets.profile_icon} alt="Profile" />
+            )}
+            <div className="navbar-profile-name">Hi, {user?.name || "User"}</div>
             <div className="navbar-profile-dropdown">
+              <li onClick={() => navigate("/profile")}>
+                <img src={assets.profile_icon} alt="" />
+                <p>Profile</p>
+              </li>
+              <hr />
               <li onClick={() => navigate("/myorders")}>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>
+              {user?.email?.includes("admin") && (
+                <>
+                  <hr />
+                  <li onClick={() => navigate("/admin")}>
+                    <img src={assets.profile_icon} alt="" />
+                    <p>Admin Panel</p>
+                  </li>
+                </>
+              )}
               <hr />
-              <li onClick={logout}>
+              <li onClick={handleLogout}>
                 <img src={assets.logout_icon} alt="" />
                 <p>Logout</p>
               </li>
