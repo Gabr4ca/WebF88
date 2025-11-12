@@ -1,12 +1,12 @@
-import axios from "axios";
 import {createContext, useEffect, useState} from "react";
-import {toast} from "react-toastify";
+import axios from "axios";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const [cartItems, setCartItems] = useState({});
+  // Update to use API Gateway URL
   const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:4000";
+  const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
 
@@ -17,24 +17,14 @@ const StoreContextProvider = (props) => {
       setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
     }
     if (token) {
-      const response = await axios.post(url + "/api/cart/add", {itemId}, {headers: {token}});
-      if (response.data.success) {
-        toast.success("item Added to Cart");
-      } else {
-        toast.error("Something went wrong");
-      }
+      await axios.post(url + "/api/cart/add", {itemId}, {headers: {token}});
     }
   };
 
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}));
     if (token) {
-      const response = await axios.post(url + "/api/cart/remove", {itemId}, {headers: {token}});
-      if (response.data.success) {
-        toast.success("item Removed from Cart");
-      } else {
-        toast.error("Something went wrong");
-      }
+      await axios.post(url + "/api/cart/remove", {itemId}, {headers: {token}});
     }
   };
 
@@ -51,14 +41,10 @@ const StoreContextProvider = (props) => {
 
   const fetchFoodList = async () => {
     const response = await axios.get(url + "/api/food/list");
-    if (response.data.success) {
-      setFoodList(response.data.data);
-    } else {
-      alert("Error! Products are not fetching..");
-    }
+    setFoodList(response.data.data);
   };
 
-  const loadCardData = async (token) => {
+  const loadCartData = async (token) => {
     const response = await axios.post(url + "/api/cart/get", {}, {headers: {token}});
     setCartItems(response.data.cartData);
   };
@@ -68,7 +54,7 @@ const StoreContextProvider = (props) => {
       await fetchFoodList();
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
-        await loadCardData(localStorage.getItem("token"));
+        await loadCartData(localStorage.getItem("token"));
       }
     }
     loadData();
@@ -85,6 +71,8 @@ const StoreContextProvider = (props) => {
     token,
     setToken,
   };
+
   return <StoreContext.Provider value={contextValue}>{props.children}</StoreContext.Provider>;
 };
+
 export default StoreContextProvider;

@@ -1,22 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./MyOrders.css";
-import { StoreContext } from "../../context/StoreContext";
+import {StoreContext} from "../../context/StoreContext";
 import axios from "axios";
-import { assets } from "../../assets/frontend_assets/assets";
+import {assets} from "../../assets/frontend_assets/assets";
 
 const MyOrders = () => {
-  const { url, token } = useContext(StoreContext);
+  const {url, token} = useContext(StoreContext);
   const [data, setData] = useState([]);
 
   const fetchOrders = async () => {
-    const response = await axios.post(
-      url + "/api/order/userorders",
-      {},
-      { headers: { token } }
-    );
-    if (response.data.success) {
-      setData(response.data.data);
-    }
+    // Routes through API Gateway to order-service
+    const response = await axios.post(url + "/api/order/userorders", {}, {headers: {token}});
+    setData(response.data.data);
   };
 
   useEffect(() => {

@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./PlaceOrder.css";
-import { StoreContext } from "../../context/StoreContext";
+import {StoreContext} from "../../context/StoreContext";
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from "react-router-dom";
 
 const PlaceOrder = () => {
-  const navigate= useNavigate();
+  const {getTotalCartAmount, token, food_list, cartItems, url} = useContext(StoreContext);
 
-  const { getTotalCartAmount, token, food_list, cartItems, url } =
-    useContext(StoreContext);
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -25,7 +22,7 @@ const PlaceOrder = () => {
   const onChangeHandler = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setData((data) => ({ ...data, [name]: value }));
+    setData((data) => ({...data, [name]: value}));
   };
 
   const placeOrder = async (event) => {
@@ -43,26 +40,28 @@ const PlaceOrder = () => {
       items: orderItems,
       amount: getTotalCartAmount() + 2,
     };
-    
-    let response= await axios.post(url+"/api/order/place",orderData,{headers:{token}});
-    if(response.data.success){
-      const {session_url}=response.data;
+    // Routes through API Gateway to order-service
+    let response = await axios.post(url + "/api/order/place", orderData, {
+      headers: {token},
+    });
+    if (response.data.success) {
+      const {session_url} = response.data;
       window.location.replace(session_url);
-    }else{
-      toast.error("Errors!")
+    } else {
+      alert("Error");
     }
   };
 
-  useEffect(()=>{
-    if(!token){
-      toast.error("Please Login first")
-      navigate("/cart")
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    } else if (getTotalCartAmount() === 0) {
+      navigate("/cart");
     }
-    else if(getTotalCartAmount()===0){
-      toast.error("Please Add Items to Cart");
-      navigate("/cart")
-    }
-  },[token])
+  }, [token]);
+
   return (
     <form className="place-order" onSubmit={placeOrder}>
       <div className="place-order-left">
@@ -93,31 +92,10 @@ const PlaceOrder = () => {
           type="text"
           placeholder="Email Address"
         />
-        <input
-          required
-          name="street"
-          value={data.street}
-          onChange={onChangeHandler}
-          type="text"
-          placeholder="Street"
-        />
+        <input required name="street" value={data.street} onChange={onChangeHandler} type="text" placeholder="Street" />
         <div className="multi-fields">
-          <input
-            required
-            name="city"
-            value={data.city}
-            onChange={onChangeHandler}
-            type="text"
-            placeholder="City"
-          />
-          <input
-            required
-            name="state"
-            value={data.state}
-            onChange={onChangeHandler}
-            type="text"
-            placeholder="State"
-          />
+          <input required name="city" value={data.city} onChange={onChangeHandler} type="text" placeholder="City" />
+          <input required name="state" value={data.state} onChange={onChangeHandler} type="text" placeholder="State" />
         </div>
         <div className="multi-fields">
           <input
@@ -137,14 +115,7 @@ const PlaceOrder = () => {
             placeholder="Country"
           />
         </div>
-        <input
-          required
-          name="phone"
-          value={data.phone}
-          onChange={onChangeHandler}
-          type="text"
-          placeholder="Phone"
-        />
+        <input required name="phone" value={data.phone} onChange={onChangeHandler} type="text" placeholder="Phone" />
       </div>
       <div className="place-order-right">
         <div className="cart-total">
@@ -162,9 +133,7 @@ const PlaceOrder = () => {
             <hr />
             <div className="cart-total-details">
               <b>Total</b>
-              <b>
-                ${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
-              </b>
+              <b>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</b>
             </div>
           </div>
           <button type="submit">PROCEED TO PAYMENT</button>
