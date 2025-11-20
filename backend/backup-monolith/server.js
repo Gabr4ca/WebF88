@@ -34,6 +34,6 @@ app.listen(port, () => {
 });
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Replace with your frontend URL
+  origin: import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:5173", // Replace with your frontend URL
   optionsSuccessStatus: 200,
 };

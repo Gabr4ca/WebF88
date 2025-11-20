@@ -11,7 +11,11 @@ const port = process.env.FOOD_SERVICE_PORT || 4002;
 
 // Enhanced CORS configuration
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:4000"],
+  origin: [
+    process.env.NODE_ENV === "production" ? "https://uma.gabrys.io.vn" : "http://localhost:5173",
+    process.env.NODE_ENV === "production" ? "https://admin.gabrys.io.vn" : "http://localhost:3000",
+    "http://localhost:4000",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token"],
   credentials: true,

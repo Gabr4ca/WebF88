@@ -2,11 +2,13 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import axios from "axios";
 
-const paymentServiceUrl = process.env.PAYMENT_SERVICE_URL || "http://localhost:4005";
+const paymentServiceUrl =
+  process.env.PAYMENT_SERVICE_URL ||
+  (process.env.NODE_ENV === "production" ? "https://api.gabrys.io.vn" : "http://localhost:4005");
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = process.env.NODE_ENV === "production" ? "https://uma.gabrys.io.vn" : "http://localhost:5173";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,

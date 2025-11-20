@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:5173";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
@@ -15,7 +15,7 @@ const placeOrder = async (req, res) => {
       address: req.body.address,
     });
     await newOrder.save();
-    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+    await userModel.findByIdAndUpdate(req.body.userId, {cartData: {}});
 
     const line_items = req.body.items.map((item) => ({
       price_data: {
@@ -46,37 +46,37 @@ const placeOrder = async (req, res) => {
       cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
     });
 
-    res.json({ success: true, session_url: session.url });
+    res.json({success: true, session_url: session.url});
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
 const verifyOrder = async (req, res) => {
-  const { orderId, success } = req.body;
+  const {orderId, success} = req.body;
   try {
     if (success == "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
-      res.json({ success: true, message: "Paid" });
+      await orderModel.findByIdAndUpdate(orderId, {payment: true});
+      res.json({success: true, message: "Paid"});
     } else {
       await orderModel.findByIdAndDelete(orderId);
-      res.json({ success: false, message: "Not Paid" });
+      res.json({success: false, message: "Not Paid"});
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
 // user orders for frontend
 const userOrders = async (req, res) => {
   try {
-    const orders = await orderModel.find({ userId: req.body.userId });
-    res.json({ success: true, data: orders });
+    const orders = await orderModel.find({userId: req.body.userId});
+    res.json({success: true, data: orders});
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
@@ -86,13 +86,13 @@ const listOrders = async (req, res) => {
     let userData = await userModel.findById(req.body.userId);
     if (userData && userData.role === "admin") {
       const orders = await orderModel.find({});
-      res.json({ success: true, data: orders });
+      res.json({success: true, data: orders});
     } else {
-      res.json({ success: false, message: "You are not admin" });
+      res.json({success: false, message: "You are not admin"});
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
@@ -104,14 +104,14 @@ const updateStatus = async (req, res) => {
       await orderModel.findByIdAndUpdate(req.body.orderId, {
         status: req.body.status,
       });
-      res.json({ success: true, message: "Status Updated Successfully" });
-    }else{
-      res.json({ success: false, message: "You are not an admin" });
+      res.json({success: true, message: "Status Updated Successfully"});
+    } else {
+      res.json({success: false, message: "You are not an admin"});
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus };
+export {placeOrder, verifyOrder, userOrders, listOrders, updateStatus};

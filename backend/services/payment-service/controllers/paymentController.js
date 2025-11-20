@@ -15,7 +15,8 @@ const createCheckoutSession = async (req, res) => {
 
   try {
     const stripe = getStripe();
-    const frontend_url = frontendUrl || "http://localhost:5173";
+    const frontend_url =
+      frontendUrl || (process.env.NODE_ENV === "production" ? "https://uma.gabrys.io.vn" : "http://localhost:5173");
 
     const line_items = items.map((item) => ({
       price_data: {
