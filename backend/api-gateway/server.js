@@ -25,6 +25,7 @@ const services = {
   food: "http://localhost:4002",
   cart: "http://localhost:4003",
   order: "http://localhost:4004",
+  payment: "http://localhost:4005",
 };
 
 // Health check
@@ -143,6 +144,10 @@ app.use("/api/cart*", (req, res) => {
 
 app.use("/api/order*", (req, res) => {
   proxyRequest(req, res, services.order);
+});
+
+app.use("/api/payment*", (req, res) => {
+  proxyRequest(req, res, services.payment);
 });
 
 // Handle images with special CORS handling
