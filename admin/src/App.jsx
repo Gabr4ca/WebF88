@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login/Login";
 
 const App = () => {
-  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:4000/";
+  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:4000";
   return (
     <div>
       <ToastContainer />

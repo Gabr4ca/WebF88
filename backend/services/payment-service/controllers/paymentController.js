@@ -15,8 +15,7 @@ const createCheckoutSession = async (req, res) => {
 
   try {
     const stripe = getStripe();
-    const frontend_url =
-      frontendUrl || (process.env.NODE_ENV === "production" ? "https://uma.gabrys.io.vn" : "http://localhost:5173");
+    const frontend_url = frontendUrl || "https://uma.gabrys.io.vn";
 
     const line_items = items.map((item) => ({
       price_data: {
@@ -43,8 +42,8 @@ const createCheckoutSession = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: line_items,
       mode: "payment",
-      success_url: `${frontend_url}/verify?success=true&orderId=${orderId}`,
-      cancel_url: `${frontend_url}/verify?success=false&orderId=${orderId}`,
+      success_url: `${frontend_url}/myorders?orderId=${orderId}&success=true`,
+      cancel_url: `${frontend_url}/cart`,
     });
 
     res.json({success: true, session_url: session.url});

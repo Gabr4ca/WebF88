@@ -3,10 +3,12 @@ import "./MyOrders.css";
 import {StoreContext} from "../../context/StoreContext";
 import axios from "axios";
 import {assets} from "../../assets/frontend_assets/assets";
+import {useSearchParams} from "react-router-dom";
 
 const MyOrders = () => {
   const {url, token} = useContext(StoreContext);
   const [data, setData] = useState([]);
+  const [searchParams] = useSearchParams();
 
   const fetchOrders = async () => {
     // Routes through API Gateway to order-service
@@ -14,7 +16,17 @@ const MyOrders = () => {
     setData(response.data.data);
   };
 
+  const verifyPayment = async () => {
+    const orderId = searchParams.get("orderId");
+    const success = searchParams.get("success");
+
+    if (orderId && success) {
+      await axios.post(url + "/api/order/verify", {orderId, success});
+    }
+  };
+
   useEffect(() => {
+    verifyPayment();
     if (token) {
       fetchOrders();
     }
