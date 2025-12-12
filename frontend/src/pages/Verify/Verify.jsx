@@ -8,12 +8,14 @@ const Verify = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
+  const sessionId = searchParams.get("session_id");
   const {url} = useContext(StoreContext);
   const navigate = useNavigate();
 
   const verifyPayment = async () => {
     // Routes through API Gateway to order-service
-    const response = await axios.post(url + "/api/order/verify", {success, orderId});
+    // Order service will verify with payment service, which confirms with Stripe
+    const response = await axios.post(url + "/api/order/verify", {success, orderId, sessionId});
     if (response.data.success) {
       navigate("/myorders");
     } else {

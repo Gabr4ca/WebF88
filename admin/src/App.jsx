@@ -10,7 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login/Login";
 
 const App = () => {
-  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:4000";
+  // In development, use empty string to leverage Vite proxy
+  // In production, use the production API URL
+  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "";
   return (
     <div>
       <ToastContainer />

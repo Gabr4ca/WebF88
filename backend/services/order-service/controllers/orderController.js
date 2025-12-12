@@ -39,18 +39,32 @@ const placeOrder = async (req, res) => {
 };
 
 const verifyOrder = async (req, res) => {
-  const {orderId, success} = req.body;
+  const {orderId, success, sessionId} = req.body;
   try {
-    if (success == "true") {
-      await orderModel.findByIdAndUpdate(orderId, {payment: true});
-      res.json({success: true, message: "Paid"});
+    if (success == "true" && sessionId) {
+      // Verify payment with the payment service (calls Stripe API)
+      const paymentVerification = await axios.post(`${paymentServiceUrl}/api/payment/verify`, {
+        sessionId: sessionId,
+      });
+
+      // Only mark as paid if payment service confirms the payment with Stripe
+      if (paymentVerification.data.success && paymentVerification.data.paymentStatus === "paid") {
+        await orderModel.findByIdAndUpdate(orderId, {payment: true});
+        res.json({success: true, message: "Paid"});
+      } else {
+        // Payment not confirmed by Stripe - delete the order
+        await orderModel.findByIdAndDelete(orderId);
+        res.json({success: false, message: "Payment verification failed"});
+      }
     } else {
       await orderModel.findByIdAndDelete(orderId);
       res.json({success: false, message: "Not Paid"});
     }
   } catch (error) {
     console.log(error);
-    res.json({success: false, message: "Error"});
+    // If verification fails, delete the order to prevent fraud
+    await orderModel.findByIdAndDelete(orderId);
+    res.json({success: false, message: "Error verifying payment"});
   }
 };
 

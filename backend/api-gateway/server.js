@@ -11,8 +11,9 @@ const port = process.env.GATEWAY_PORT || 4000;
 // CORS configuration
 const corsOptions = {
   origin: [
-    process.env.NODE_ENV === "https://uma.gabrys.io.vn",
-    process.env.NODE_ENV === "production" ? "https://admin.gabrys.io.vn" : "http://localhost:3000",
+    "https://uma.gabrys.io.vn",
+    process.env.NODE_ENV === "production" ? "https://admin.gabrys.io.vn" : "http://localhost:5173",
+    "http://localhost:3000",
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token"],
