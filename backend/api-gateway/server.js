@@ -24,7 +24,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+
+// Only parse JSON for non-multipart requests
+app.use((req, res, next) => {
+  if (req.headers["content-type"]?.includes("multipart/form-data")) {
+    // Skip body parsing for multipart form data
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 
 // Service URLs
 const services = {
@@ -52,35 +61,59 @@ const proxyRequest = async (req, res, serviceUrl) => {
     console.log(`🔄 [API Gateway] ${req.method} ${req.originalUrl}`);
     console.log(`🎯 [API Gateway] → ${targetUrl}`);
 
-    const config = {
-      method: req.method.toLowerCase(),
-      url: targetUrl,
-      headers: {
-        ...req.headers,
-        host: undefined,
-        "content-length": undefined,
-      },
-      timeout: 30000,
-      validateStatus: () => true,
-    };
+    // Check if this is a multipart form data request
+    const isMultipart = req.headers["content-type"]?.includes("multipart/form-data");
 
-    if (req.method !== "GET" && req.method !== "HEAD" && req.body) {
-      config.data = req.body;
-    }
+    if (isMultipart) {
+      // For multipart requests, stream the request directly
+      const response = await axios({
+        method: req.method.toLowerCase(),
+        url: targetUrl,
+        headers: {
+          ...req.headers,
+          host: undefined,
+        },
+        data: req,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+        timeout: 30000,
+        validateStatus: () => true,
+      });
 
-    const response = await axios(config);
+      console.log(`✅ [API Gateway] Response: ${response.status}`);
+      res.status(response.status).json(response.data);
+    } else {
+      // For regular requests, use parsed body
+      const config = {
+        method: req.method.toLowerCase(),
+        url: targetUrl,
+        headers: {
+          ...req.headers,
+          host: undefined,
+          "content-length": undefined,
+        },
+        timeout: 30000,
+        validateStatus: () => true,
+      };
 
-    console.log(`✅ [API Gateway] Response: ${response.status}`);
-
-    res.status(response.status);
-
-    Object.keys(response.headers).forEach((key) => {
-      if (!["transfer-encoding", "connection", "content-encoding"].includes(key.toLowerCase())) {
-        res.set(key, response.headers[key]);
+      if (req.method !== "GET" && req.method !== "HEAD" && req.body) {
+        config.data = req.body;
       }
-    });
 
-    res.send(response.data);
+      const response = await axios(config);
+
+      console.log(`✅ [API Gateway] Response: ${response.status}`);
+
+      res.status(response.status);
+
+      Object.keys(response.headers).forEach((key) => {
+        if (!["transfer-encoding", "connection", "content-encoding"].includes(key.toLowerCase())) {
+          res.set(key, response.headers[key]);
+        }
+      });
+
+      res.send(response.data);
+    }
   } catch (error) {
     console.error(`❌ [API Gateway] Proxy error for ${serviceUrl}:`, error.message);
 
