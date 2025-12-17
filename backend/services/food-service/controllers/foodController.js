@@ -17,43 +17,59 @@ const addFood = async (req, res) => {
     let userData = await userModel.findById(req.body.userId);
     if (userData && userData.role === "admin") {
       await food.save();
-      res.json({ success: true, message: "Food Added" });
+      res.json({success: true, message: "Food Added"});
     } else {
-      res.json({ success: false, message: "You are not admin" });
+      res.json({success: false, message: "You are not admin"});
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
-// all foods
+// all foods for users (only active items)
 const listFood = async (req, res) => {
   try {
-    const foods = await foodModel.find({});
-    res.json({ success: true, data: foods });
+    const foods = await foodModel.find({isDeleted: {$ne: true}});
+    res.json({success: true, data: foods});
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
-// remove food item
-const removeFood = async (req, res) => {
+// all foods for admin (including hidden items)
+const listAllFood = async (req, res) => {
+  try {
+    let userData = await userModel.findById(req.body.userId);
+    if (userData && userData.role === "admin") {
+      const foods = await foodModel.find({});
+      res.json({success: true, data: foods});
+    } else {
+      res.json({success: false, message: "You are not admin"});
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({success: false, message: "Error"});
+  }
+};
+
+// toggle food visibility
+const toggleFoodVisibility = async (req, res) => {
   try {
     let userData = await userModel.findById(req.body.userId);
     if (userData && userData.role === "admin") {
       const food = await foodModel.findById(req.body.id);
-      fs.unlink(`uploads/${food.image}`, () => {});
-      await foodModel.findByIdAndDelete(req.body.id);
-      res.json({ success: true, message: "Food Removed" });
+      const newStatus = !food.isDeleted;
+      await foodModel.findByIdAndUpdate(req.body.id, {isDeleted: newStatus});
+      res.json({success: true, message: newStatus ? "Food Hidden" : "Food Visible"});
     } else {
-      res.json({ success: false, message: "You are not admin" });
+      res.json({success: false, message: "You are not admin"});
     }
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({success: false, message: "Error"});
   }
 };
 
-export { addFood, listFood, removeFood };
+export {addFood, listFood, listAllFood, toggleFoodVisibility};

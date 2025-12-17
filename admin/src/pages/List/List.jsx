@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./List.css";
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useContext } from "react";
-import { StoreContext } from "../../context/StoreContext";
-import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify";
+import {useContext} from "react";
+import {StoreContext} from "../../context/StoreContext";
+import {useNavigate} from "react-router-dom";
 
-const List = ({ url }) => {
+const List = ({url}) => {
   const navigate = useNavigate();
-  const { token,admin } = useContext(StoreContext);
+  const {token, admin} = useContext(StoreContext);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
-    const response = await axios.get(`${url}/api/food/list`);
+    const response = await axios.get(`${url}/api/food/list-all`, {
+      headers: {token},
+    });
     if (response.data.success) {
       setList(response.data.data);
     } else {
@@ -20,12 +22,8 @@ const List = ({ url }) => {
     }
   };
 
-  const removeFood = async (foodId) => {
-    const response = await axios.post(
-      `${url}/api/food/remove`,
-      { id: foodId },
-      { headers: { token } }
-    );
+  const toggleFood = async (foodId) => {
+    const response = await axios.post(`${url}/api/food/toggle`, {id: foodId}, {headers: {token}});
     await fetchList();
     if (response.data.success) {
       toast.success(response.data.message);
@@ -54,14 +52,17 @@ const List = ({ url }) => {
         </div>
         {list.map((item, index) => {
           return (
-            <div key={index} className="list-table-format">
+            <div key={index} className={`list-table-format ${item.isDeleted ? "hidden-item" : ""}`}>
               <img src={`${url}/images/` + item.image} alt="" />
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>${item.price}</p>
-              <p onClick={() => removeFood(item._id)} className="cursor">
-                X
-              </p>
+              <button
+                onClick={() => toggleFood(item._id)}
+                className={`toggle-btn ${item.isDeleted ? "show-btn" : "hide-btn"}`}
+              >
+                {item.isDeleted ? "Show" : "Hide"}
+              </button>
             </div>
           );
         })}

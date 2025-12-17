@@ -5,7 +5,9 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   // Update to use API Gateway URL
-  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : "http://localhost:4000";
+  // Use window.location.hostname to work on both localhost and network IP
+  const apiHost = window.location.hostname === "localhost" ? "localhost" : window.location.hostname;
+  const url = import.meta.env.PROD ? "https://uma.gabrys.io.vn" : `http://${apiHost}:4000`;
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);

@@ -6,7 +6,8 @@ const paymentServiceUrl = process.env.PAYMENT_SERVICE_URL || "http://localhost:4
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-  const frontend_url = process.env.NODE_ENV === "production" ? "https://uma.gabrys.io.vn" : "http://localhost:5173";
+  // Use FRONTEND_URL from env, fallback to production URL
+  const frontend_url = process.env.FRONTEND_URL || "https://uma.gabrys.io.vn";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,

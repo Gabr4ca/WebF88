@@ -95,7 +95,7 @@ const getAllUsers = async (req, res) => {
 
 // Update user role (admin only)
 const updateUserRole = async (req, res) => {
-  const {userId, role} = req.body;
+  const {targetUserId, role} = req.body;
   try {
     const adminUser = await userModel.findById(req.body.userId);
     if (!adminUser || adminUser.role !== "admin") {
@@ -104,7 +104,7 @@ const updateUserRole = async (req, res) => {
     if (!["user", "admin"].includes(role)) {
       return res.json({success: false, message: "Invalid role"});
     }
-    await userModel.findByIdAndUpdate(userId, {role});
+    await userModel.findByIdAndUpdate(targetUserId, {role});
     res.json({success: true, message: "Role updated successfully"});
   } catch (error) {
     console.log(error);
@@ -114,7 +114,7 @@ const updateUserRole = async (req, res) => {
 
 // Update user status (admin only)
 const updateUserStatus = async (req, res) => {
-  const {userId, status} = req.body;
+  const {targetUserId, status} = req.body;
   try {
     const adminUser = await userModel.findById(req.body.userId);
     if (!adminUser || adminUser.role !== "admin") {
@@ -123,7 +123,7 @@ const updateUserStatus = async (req, res) => {
     if (!["active", "deactivated"].includes(status)) {
       return res.json({success: false, message: "Invalid status"});
     }
-    await userModel.findByIdAndUpdate(userId, {status});
+    await userModel.findByIdAndUpdate(targetUserId, {status});
     res.json({success: true, message: "Status updated successfully"});
   } catch (error) {
     console.log(error);
@@ -133,13 +133,13 @@ const updateUserStatus = async (req, res) => {
 
 // Delete user (admin only)
 const deleteUser = async (req, res) => {
-  const {userId} = req.body;
+  const {targetUserId} = req.body;
   try {
     const adminUser = await userModel.findById(req.body.userId);
     if (!adminUser || adminUser.role !== "admin") {
       return res.json({success: false, message: "Not authorized"});
     }
-    await userModel.findByIdAndDelete(userId);
+    await userModel.findByIdAndDelete(targetUserId);
     res.json({success: true, message: "User deleted successfully"});
   } catch (error) {
     console.log(error);

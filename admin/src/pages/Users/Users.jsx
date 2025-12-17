@@ -51,7 +51,7 @@ const Users = ({url}) => {
       if (changes.role !== undefined) {
         const roleResponse = await axios.post(
           `${url}/api/user/update-role`,
-          {userId, role: changes.role},
+          {targetUserId: userId, role: changes.role},
           {headers: {token}}
         );
         if (!roleResponse.data.success) {
@@ -64,7 +64,7 @@ const Users = ({url}) => {
       if (changes.status !== undefined) {
         const statusResponse = await axios.post(
           `${url}/api/user/update-status`,
-          {userId, status: changes.status},
+          {targetUserId: userId, status: changes.status},
           {headers: {token}}
         );
         if (!statusResponse.data.success) {
@@ -98,7 +98,7 @@ const Users = ({url}) => {
     if (!userToDelete) return;
 
     try {
-      const response = await axios.post(`${url}/api/user/delete`, {userId: userToDelete._id}, {headers: {token}});
+      const response = await axios.post(`${url}/api/user/delete`, {targetUserId: userToDelete._id}, {headers: {token}});
 
       if (response.data.success) {
         toast.success("User deleted successfully");
