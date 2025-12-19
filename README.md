@@ -1,7 +1,7 @@
 1. Hồ Nguyên Minh - 3122411123.
 2. Thông Trung Quyền - 3122411175.
 3. Lục Trọng Khoa - 3122411096
-# 🍔 UMA - Fast Food Delivery System
+# 🍔 UMADAKIMASU - Fast Food Delivery System
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Live-success?style=for-the-badge" alt="Status">
@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/Framework-React%20%26%20NodeJS-blue?style=for-the-badge" alt="Framework">
 </p>
 
-**UMA** là hệ thống quản lý và đặt thức ăn nhanh trực tuyến toàn diện, cho phép người dùng trải nghiệm đặt hàng mượt mà và cung cấp bảng điều khiển quản trị mạnh mẽ để kiểm soát kho hàng và đơn hàng.
+**UMADAKIMASU** là hệ thống quản lý và đặt thức ăn nhanh trực tuyến toàn diện, cho phép người dùng trải nghiệm đặt hàng mượt mà và cung cấp bảng điều khiển quản trị mạnh mẽ để kiểm soát kho hàng và đơn hàng.
 
 ---
 
