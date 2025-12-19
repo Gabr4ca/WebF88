@@ -22,7 +22,7 @@
 ### 🛡️ Administrative Panel (Admin)
 - **URL:** [https://admin.gabrys.io.vn/](https://admin.gabrys.io.vn/)
 - **Credentials:**
-  - **Email:** `admin@gabrys.io.vn`
+  - **Email:** `admin@gtomato.com`
   - **Password:** `admin123`
 
 ---
@@ -31,9 +31,9 @@
 
 ### User Experience
 - **Categorized Menu:** Duyệt món ăn theo danh mục (Salad, Rolls, Deserts, v.v.).
-- **Dynamic Cart:** Thêm/Xóa món và cập nhật số lượng trực tiếp trong giỏ hàng.
+- **Dynamic Cart:** Thêm/Xóa món và cập nhật số lượng.
 - **Secure Payment:** Tích hợp cổng thanh toán **Stripe** (Test Mode).
-- **Order Tracking:** Theo dõi trạng thái đơn hàng thời gian thực.
+- **Order Tracking:** Theo dõi trạng thái đơn hàng.
 
 ### Admin Management
 - **Inventory Control:** Thêm món mới và ẩn/hiện sản phẩm trên thực đơn khách hàng.
