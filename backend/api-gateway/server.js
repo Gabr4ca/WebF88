@@ -2,6 +2,8 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger.js";
 
 dotenv.config();
 
@@ -51,6 +53,19 @@ app.get("/health", (req, res) => {
     timestamp: new Date().toISOString(),
     services: services,
   });
+});
+
+// Swagger UI - API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "Food Delivery API Documentation",
+  customfavIcon: "/favicon.ico"
+}));
+
+// Swagger JSON endpoint
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
 });
 
 // Manual proxy function for API requests
@@ -219,6 +234,7 @@ app.use("*", (req, res) => {
 app.listen(port, () => {
   console.log(`🚀 API Gateway running on http://localhost:${port}`);
   console.log(`📋 Health check: http://localhost:${port}/health`);
+  console.log(`📚 API Docs: http://localhost:${port}/api-docs`);
   console.log(`🔍 Debug info: http://localhost:${port}/debug`);
   console.log("🔗 Manual routing (preserving full paths):");
   Object.entries(services).forEach(([name, url]) => {
