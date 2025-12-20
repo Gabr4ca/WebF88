@@ -32,60 +32,60 @@ export const swaggerSpec = {
       User: {
         type: "object",
         properties: {
-          _id: { type: "string" },
-          name: { type: "string" },
-          email: { type: "string" },
-          role: { type: "string", enum: ["user", "admin"] },
-          status: { type: "string", enum: ["active", "deactivated"] },
+          _id: {type: "string"},
+          name: {type: "string"},
+          email: {type: "string"},
+          role: {type: "string", enum: ["user", "admin"]},
+          status: {type: "string", enum: ["active", "deactivated"]},
         },
       },
       Food: {
         type: "object",
         properties: {
-          _id: { type: "string" },
-          name: { type: "string" },
-          description: { type: "string" },
-          price: { type: "number" },
-          category: { type: "string" },
-          image: { type: "string" },
-          isDeleted: { type: "boolean" },
+          _id: {type: "string"},
+          name: {type: "string"},
+          description: {type: "string"},
+          price: {type: "number"},
+          category: {type: "string"},
+          image: {type: "string"},
+          isDeleted: {type: "boolean"},
         },
       },
       Order: {
         type: "object",
         properties: {
-          _id: { type: "string" },
-          userId: { type: "string" },
-          items: { type: "array", items: { type: "object" } },
-          amount: { type: "number" },
-          address: { type: "object" },
-          status: { type: "string" },
-          payment: { type: "boolean" },
-          date: { type: "string", format: "date-time" },
+          _id: {type: "string"},
+          userId: {type: "string"},
+          items: {type: "array", items: {type: "object"}},
+          amount: {type: "number"},
+          address: {type: "object"},
+          status: {type: "string"},
+          payment: {type: "boolean"},
+          date: {type: "string", format: "date-time"},
         },
       },
       SuccessResponse: {
         type: "object",
         properties: {
-          success: { type: "boolean", example: true },
-          message: { type: "string" },
+          success: {type: "boolean", example: true},
+          message: {type: "string"},
         },
       },
       ErrorResponse: {
         type: "object",
         properties: {
-          success: { type: "boolean", example: false },
-          message: { type: "string" },
+          success: {type: "boolean", example: false},
+          message: {type: "string"},
         },
       },
     },
   },
   tags: [
-    { name: "User", description: "User authentication and management" },
-    { name: "Food", description: "Food items management" },
-    { name: "Cart", description: "Shopping cart operations" },
-    { name: "Order", description: "Order management" },
-    { name: "Payment", description: "Payment processing" },
+    {name: "User", description: "User authentication and management"},
+    {name: "Food", description: "Food items management"},
+    {name: "Cart", description: "Shopping cart operations"},
+    {name: "Order", description: "Order management"},
+    {name: "Payment", description: "Payment processing"},
   ],
   paths: {
     // ==================== USER ENDPOINTS ====================
@@ -102,9 +102,9 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["name", "email", "password"],
                 properties: {
-                  name: { type: "string", example: "John Doe" },
-                  email: { type: "string", format: "email", example: "john@example.com" },
-                  password: { type: "string", minLength: 8, example: "password123" },
+                  name: {type: "string", example: "John Doe"},
+                  email: {type: "string", format: "email", example: "john@example.com"},
+                  password: {type: "string", minLength: 8, example: "password123"},
                 },
               },
             },
@@ -118,9 +118,9 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    token: { type: "string" },
-                    role: { type: "string" },
+                    success: {type: "boolean"},
+                    token: {type: "string"},
+                    role: {type: "string"},
                   },
                 },
               },
@@ -142,8 +142,8 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["email", "password"],
                 properties: {
-                  email: { type: "string", format: "email", example: "john@example.com" },
-                  password: { type: "string", example: "password123" },
+                  email: {type: "string", format: "email", example: "john@example.com"},
+                  password: {type: "string", example: "password123"},
                 },
               },
             },
@@ -157,9 +157,9 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    token: { type: "string" },
-                    role: { type: "string" },
+                    success: {type: "boolean"},
+                    token: {type: "string"},
+                    role: {type: "string"},
                   },
                 },
               },
@@ -173,7 +173,7 @@ export const swaggerSpec = {
         tags: ["User"],
         summary: "Get all users (Admin only)",
         description: "Retrieve list of all registered users. Requires admin privileges.",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         responses: {
           200: {
             description: "List of users",
@@ -182,10 +182,10 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
+                    success: {type: "boolean"},
                     data: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/User" },
+                      items: {$ref: "#/components/schemas/User"},
                     },
                   },
                 },
@@ -200,7 +200,7 @@ export const swaggerSpec = {
         tags: ["User"],
         summary: "Update user role (Admin only)",
         description: "Change a user's role between 'user' and 'admin'",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -209,15 +209,15 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["targetUserId", "role"],
                 properties: {
-                  targetUserId: { type: "string", description: "ID of user to update" },
-                  role: { type: "string", enum: ["user", "admin"] },
+                  targetUserId: {type: "string", description: "ID of user to update"},
+                  role: {type: "string", enum: ["user", "admin"]},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Role updated successfully" },
+          200: {description: "Role updated successfully"},
         },
       },
     },
@@ -226,7 +226,7 @@ export const swaggerSpec = {
         tags: ["User"],
         summary: "Update user status (Admin only)",
         description: "Activate or deactivate a user account",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -235,15 +235,15 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["targetUserId", "status"],
                 properties: {
-                  targetUserId: { type: "string", description: "ID of user to update" },
-                  status: { type: "string", enum: ["active", "deactivated"] },
+                  targetUserId: {type: "string", description: "ID of user to update"},
+                  status: {type: "string", enum: ["active", "deactivated"]},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Status updated successfully" },
+          200: {description: "Status updated successfully"},
         },
       },
     },
@@ -252,7 +252,7 @@ export const swaggerSpec = {
         tags: ["User"],
         summary: "Delete user (Admin only)",
         description: "Permanently delete a user account",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -261,14 +261,14 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["targetUserId"],
                 properties: {
-                  targetUserId: { type: "string", description: "ID of user to delete" },
+                  targetUserId: {type: "string", description: "ID of user to delete"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "User deleted successfully" },
+          200: {description: "User deleted successfully"},
         },
       },
     },
@@ -287,10 +287,10 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
+                    success: {type: "boolean"},
                     data: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/Food" },
+                      items: {$ref: "#/components/schemas/Food"},
                     },
                   },
                 },
@@ -305,7 +305,7 @@ export const swaggerSpec = {
         tags: ["Food"],
         summary: "Get all food items including hidden (Admin only)",
         description: "Retrieve complete list of food items including those marked as hidden",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         responses: {
           200: {
             description: "Complete list of food items",
@@ -314,10 +314,10 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
+                    success: {type: "boolean"},
                     data: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/Food" },
+                      items: {$ref: "#/components/schemas/Food"},
                     },
                   },
                 },
@@ -332,7 +332,7 @@ export const swaggerSpec = {
         tags: ["Food"],
         summary: "Add new food item (Admin only)",
         description: "Create a new food item with image upload",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -341,18 +341,18 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["name", "description", "price", "category", "image"],
                 properties: {
-                  name: { type: "string", example: "Chicken Burger" },
-                  description: { type: "string", example: "Delicious grilled chicken burger" },
-                  price: { type: "number", example: 12.99 },
-                  category: { type: "string", example: "Burgers" },
-                  image: { type: "string", format: "binary" },
+                  name: {type: "string", example: "Chicken Burger"},
+                  description: {type: "string", example: "Delicious grilled chicken burger"},
+                  price: {type: "number", example: 12.99},
+                  category: {type: "string", example: "Burgers"},
+                  image: {type: "string", format: "binary"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Food item added successfully" },
+          200: {description: "Food item added successfully"},
         },
       },
     },
@@ -361,7 +361,7 @@ export const swaggerSpec = {
         tags: ["Food"],
         summary: "Toggle food visibility (Admin only)",
         description: "Show or hide a food item from customer view",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -370,14 +370,14 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["id"],
                 properties: {
-                  id: { type: "string", description: "Food item ID" },
+                  id: {type: "string", description: "Food item ID"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Food visibility toggled" },
+          200: {description: "Food visibility toggled"},
         },
       },
     },
@@ -388,7 +388,7 @@ export const swaggerSpec = {
         tags: ["Cart"],
         summary: "Add item to cart",
         description: "Add a food item to the user's shopping cart",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -397,14 +397,14 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["itemId"],
                 properties: {
-                  itemId: { type: "string", description: "Food item ID to add" },
+                  itemId: {type: "string", description: "Food item ID to add"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Item added to cart" },
+          200: {description: "Item added to cart"},
         },
       },
     },
@@ -413,7 +413,7 @@ export const swaggerSpec = {
         tags: ["Cart"],
         summary: "Remove item from cart",
         description: "Remove one quantity of a food item from the cart",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -422,14 +422,14 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["itemId"],
                 properties: {
-                  itemId: { type: "string", description: "Food item ID to remove" },
+                  itemId: {type: "string", description: "Food item ID to remove"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Item removed from cart" },
+          200: {description: "Item removed from cart"},
         },
       },
     },
@@ -438,7 +438,7 @@ export const swaggerSpec = {
         tags: ["Cart"],
         summary: "Get cart data",
         description: "Retrieve the current user's cart contents",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         responses: {
           200: {
             description: "Cart data retrieved",
@@ -447,8 +447,8 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    cartData: { type: "object" },
+                    success: {type: "boolean"},
+                    cartData: {type: "object"},
                   },
                 },
               },
@@ -464,7 +464,7 @@ export const swaggerSpec = {
         tags: ["Order"],
         summary: "Place a new order",
         description: "Create a new order and initiate payment process",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -478,25 +478,25 @@ export const swaggerSpec = {
                     items: {
                       type: "object",
                       properties: {
-                        _id: { type: "string" },
-                        name: { type: "string" },
-                        price: { type: "number" },
-                        quantity: { type: "integer" },
+                        _id: {type: "string"},
+                        name: {type: "string"},
+                        price: {type: "number"},
+                        quantity: {type: "integer"},
                       },
                     },
                   },
-                  amount: { type: "number", example: 45.99 },
+                  amount: {type: "number", example: 45.99},
                   address: {
                     type: "object",
                     properties: {
-                      firstName: { type: "string" },
-                      lastName: { type: "string" },
-                      street: { type: "string" },
-                      city: { type: "string" },
-                      state: { type: "string" },
-                      zipcode: { type: "string" },
-                      country: { type: "string" },
-                      phone: { type: "string" },
+                      firstName: {type: "string"},
+                      lastName: {type: "string"},
+                      street: {type: "string"},
+                      city: {type: "string"},
+                      state: {type: "string"},
+                      zipcode: {type: "string"},
+                      country: {type: "string"},
+                      phone: {type: "string"},
                     },
                   },
                 },
@@ -512,8 +512,8 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    session_url: { type: "string", format: "uri" },
+                    success: {type: "boolean"},
+                    session_url: {type: "string", format: "uri"},
                   },
                 },
               },
@@ -535,16 +535,16 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["orderId", "success"],
                 properties: {
-                  orderId: { type: "string" },
-                  success: { type: "string", enum: ["true", "false"] },
-                  sessionId: { type: "string", description: "Stripe session ID" },
+                  orderId: {type: "string"},
+                  success: {type: "string", enum: ["true", "false"]},
+                  sessionId: {type: "string", description: "Stripe session ID"},
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "Payment verification result" },
+          200: {description: "Payment verification result"},
         },
       },
     },
@@ -553,7 +553,7 @@ export const swaggerSpec = {
         tags: ["Order"],
         summary: "Get user orders",
         description: "Retrieve all orders for the authenticated user",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         responses: {
           200: {
             description: "List of user orders",
@@ -562,10 +562,10 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
+                    success: {type: "boolean"},
                     data: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/Order" },
+                      items: {$ref: "#/components/schemas/Order"},
                     },
                   },
                 },
@@ -580,7 +580,7 @@ export const swaggerSpec = {
         tags: ["Order"],
         summary: "Get all orders (Admin only)",
         description: "Retrieve all orders in the system",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         responses: {
           200: {
             description: "List of all orders",
@@ -589,10 +589,10 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
+                    success: {type: "boolean"},
                     data: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/Order" },
+                      items: {$ref: "#/components/schemas/Order"},
                     },
                   },
                 },
@@ -607,7 +607,7 @@ export const swaggerSpec = {
         tags: ["Order"],
         summary: "Update order status (Admin only)",
         description: "Update the delivery status of an order",
-        security: [{ tokenAuth: [] }],
+        security: [{tokenAuth: []}],
         requestBody: {
           required: true,
           content: {
@@ -616,7 +616,7 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["orderId", "status"],
                 properties: {
-                  orderId: { type: "string" },
+                  orderId: {type: "string"},
                   status: {
                     type: "string",
                     enum: ["Food Processing", "Out for delivery", "Delivered"],
@@ -627,7 +627,7 @@ export const swaggerSpec = {
           },
         },
         responses: {
-          200: { description: "Order status updated" },
+          200: {description: "Order status updated"},
         },
       },
     },
@@ -646,10 +646,10 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["items", "amount", "orderId", "frontendUrl"],
                 properties: {
-                  items: { type: "array", items: { type: "object" } },
-                  amount: { type: "number" },
-                  orderId: { type: "string" },
-                  frontendUrl: { type: "string", format: "uri" },
+                  items: {type: "array", items: {type: "object"}},
+                  amount: {type: "number"},
+                  orderId: {type: "string"},
+                  frontendUrl: {type: "string", format: "uri"},
                 },
               },
             },
@@ -663,8 +663,8 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    session_url: { type: "string", format: "uri" },
+                    success: {type: "boolean"},
+                    session_url: {type: "string", format: "uri"},
                   },
                 },
               },
@@ -686,7 +686,7 @@ export const swaggerSpec = {
                 type: "object",
                 required: ["sessionId"],
                 properties: {
-                  sessionId: { type: "string", description: "Stripe checkout session ID" },
+                  sessionId: {type: "string", description: "Stripe checkout session ID"},
                 },
               },
             },
@@ -700,9 +700,9 @@ export const swaggerSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    success: { type: "boolean" },
-                    paymentStatus: { type: "string" },
-                    paymentIntent: { type: "string" },
+                    success: {type: "boolean"},
+                    paymentStatus: {type: "string"},
+                    paymentIntent: {type: "string"},
                   },
                 },
               },

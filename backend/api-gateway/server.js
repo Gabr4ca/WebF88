@@ -3,7 +3,7 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./swagger.js";
+import {swaggerSpec} from "./swagger.js";
 
 dotenv.config();
 
@@ -56,11 +56,15 @@ app.get("/health", (req, res) => {
 });
 
 // Swagger UI - API Documentation
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: "Food Delivery API Documentation",
-  customfavIcon: "/favicon.ico"
-}));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Food Delivery API Documentation",
+    customfavIcon: "/favicon.ico",
+  })
+);
 
 // Swagger JSON endpoint
 app.get("/api-docs.json", (req, res) => {
